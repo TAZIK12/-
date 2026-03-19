@@ -3,254 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Моё портфолио</title>
-
+<title>Премиум Портфолио</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* --- Общие стили --- */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f0f0f;
-    color: white;
+/* Плавная прокрутка */
+html {
+  scroll-behavior: smooth;
 }
-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 50px;
-    background: rgba(0,0,0,0.5);
-    position: fixed;
-    width: 100%;
-    z-index: 100;
+
+/* Общие стили */
+body {margin:0;font-family:'Poppins',sans-serif;background:#0f0f0f;color:white;overflow-x:hidden;}
+header {display:flex;justify-content:space-between;padding:20px 50px;position:fixed;width:100%;background:rgba(0,0,0,0.8);z-index:1000;transition:0.3s;}
+nav a {color:white;margin-left:20px;text-decoration:none;font-weight:600;transition:0.3s;}
+nav a:hover {color:#00ff99;}
+.hero {height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:50px;text-align:center;background:linear-gradient(135deg,#111,#000);}
+.hero h1 {font-size:60px;margin:0;animation:fadeInUp 1s ease forwards;opacity:0;}
+.hero p {color:#aaa;max-width:600px;margin-top:20px;animation:fadeInUp 1.2s ease forwards;opacity:0;}
+.hero .btn {display:inline-block;margin-top:30px;padding:20px 50px;background:#00ff99;color:black;border-radius:12px;text-decoration:none;font-weight:bold;font-size:18px;transition:0.3s;animation:fadeInUp 1.4s ease forwards;opacity:0;}
+.hero .btn:hover {transform:scale(1.05);}
+@keyframes fadeInUp {0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+
+section {padding:100px 50px;}
+.cards {display:flex;gap:20px;flex-wrap:wrap;justify-content:center;}
+.card {background:#1a1a1a;padding:25px;border-radius:15px;width:280px;transition:0.3s;color:white;text-decoration:none;cursor:pointer;position:relative;}
+.card:hover {transform:translateY(-10px);box-shadow:0 15px 30px rgba(0,255,153,0.4);}
+.card h3 {margin-top:0;}
+.card p {color:#aaa;}
+.card .overlay {position:absolute;top:0;left:0;width:100%;height:100%;border-radius:15px;background:rgba(0,255,153,0.1);opacity:0;transition:0.3s;}
+.card:hover .overlay {opacity:1;}
+
+.contact-link {display:block;margin-top:30px;padding:20px 0;background:#00ff99;color:black;border-radius:12px;text-align:center;font-weight:bold;text-decoration:none;font-size:18px;transition:0.3s;}
+.contact-link:hover {transform:scale(1.05);}
+
+.form {display:flex;flex-direction:column;max-width:500px;gap:15px;margin:0 auto;}
+.form input,.form textarea {padding:15px;border-radius:10px;border:none;width:100%;box-sizing:border-box;font-size:16px;}
+.form button {padding:15px;background:#00ff99;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-size:18px;transition:0.3s;align-self:center;}
+.form button:hover {transform:scale(1.05);}
+
+/* Красивое уведомление после заявки */
+.popup {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background: linear-gradient(135deg,#00ff99,#00cc66);
+  color: black;
+  padding: 20px 35px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0,255,153,0.4);
+  opacity: 0;
+  transition: all 0.3s ease;
 }
-.logo {
-    font-size: 20px;
-    font-weight: bold;
-}
-nav a {
-    color: white;
-    margin-left: 20px;
-    text-decoration: none;
-    position: relative;
-    transition: 0.3s;
-}
-nav a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -5px;
-    left: 0;
-    background-color: #00ff99;
-    transition: 0.3s;
-}
-nav a:hover::after {
-    width: 100%;
-}
-.hero {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 50px;
-    background: linear-gradient(135deg, #1f1f1f, #000), url('https://picsum.photos/1920/1080') no-repeat center/cover;
-    background-size: cover;
-    transition: transform 1.2s ease-out;
-}
-.hero:hover {
-    transform: scale(1.02);
-}
-.hero h1 {
-    font-size: 50px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 1s ease-out;
-}
-.hero p {
-    color: #aaa;
-    margin-top: 10px;
-    font-size: 18px;
-    max-width: 600px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 1s ease-out;
-}
-.hero.show h1, .hero.show p {
-    opacity: 1;
-    transform: translateY(0);
-}
-section {
-    padding: 80px 50px;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
-    box-shadow: 0 5px 15px rgba(0,255,153,0.1);
-    border-radius: 10px;
-    margin-bottom: 50px;
-}
-section.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-.cards {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-.card {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 15px;
-    width: 250px;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,255,153,0.1);
-    transform: scale(0);
-    transition: transform 0.4s ease;
-    border-radius: 15px;
-}
-.card:hover::before {
-    transform: scale(1);
-}
-.card h3, .card p {
-    transition: transform 0.3s;
-}
-.card:hover h3, .card:hover p {
-    transform: translateY(-5px);
-}
-.cards .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 25px rgba(0,255,153,0.5);
-}
-.cards .card:hover::before {
-    transform: scale(1);
-}
-.contact-link {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 15px 30px;
-    background: #00ff99;
-    color: #000;
-    font-weight: bold;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-.contact-link:hover {
-    background: #00cc7a;
-    transform: scale(1.05);
+.popup.show {
+  display: block;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
 }
 </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">MY SITE</div>
-    <nav>
-        <a href="#hero">Главная</a>
-        <a href="#services">Услуги</a>
-        <a href="#portfolio">Портфолио</a>
-        <a href="#contacts">Контакты</a>
-    </nav>
+<div>PORTFOLIO</div>
+<nav>
+<a href="#hero">Главная</a>
+<a href="#services">Услуги</a>
+<a href="#portfolio">Портфолио</a>
+<a href="#contacts">Контакты</a>
+</nav>
 </header>
 
 <section class="hero" id="hero">
-    <h1>Привет! Я Вова</h1>
-    <p>Я создаю современные и красивые сайты для бизнеса. Люблю делать интерфейсы простыми, удобными и стильными. Могу помочь с сайтом для твоего проекта, магазина или портфолио.</p>
+<h1>Привет! Я делаю сайты</h1>
+<p>Современные, быстрые и эффектные решения для бизнеса. Помогаю привлечь клиентов через интернет.</p>
+<a class="btn" href="#contacts">Связаться</a>
 </section>
 
 <section id="services">
-    <h2>Мои услуги</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>Сайт-визитка</h3>
-            <p>Простой сайт для бизнеса</p>
-        </div>
-        <div class="card">
-            <h3>Лендинг</h3>
-            <p>Продающая страница</p>
-        </div>
-        <div class="card">
-            <h3>Редизайн</h3>
-            <p>Обновление старого сайта</p>
-        </div>
-    </div>
+<h2>Услуги</h2>
+<div class="cards">
+<div class="card"><h3>Сайт-визитка</h3><p>Простой и современный сайт для бизнеса</p><div class="overlay"></div></div>
+<div class="card"><h3>Лендинг</h3><p>Продающая страница для вашего продукта</p><div class="overlay"></div></div>
+<div class="card"><h3>Редизайн</h3><p>Обновление дизайна и интерфейса</p><div class="overlay"></div></div>
+</div>
 </section>
 
 <section id="portfolio">
-    <h2>Портфолио</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>Проект 1</h3>
-            <p>Сайт для мастера маникюра</p>
-        </div>
-        <div class="card">
-            <h3>Проект 2</h3>
-            <p>Лендинг для фитнес-тренера</p>
-        </div>
-        <div class="card">
-            <h3>Проект 3</h3>
-            <p>Сайт-визитка для барбершопа</p>
-        </div>
-    </div>
+<h2>Портфолио</h2>
+<div class="cards">
+<div class="card"><h3>Барбершоп</h3><p>+30% клиентов</p><div class="overlay"></div></div>
+<div class="card"><h3>Фитнес лендинг</h3><p>Первые заявки за 2 дня</p><div class="overlay"></div></div>
+<a href="https://tazik12.github.io/-_/" target="_blank" style="text-decoration:none;color:inherit;">
+<div class="card"><h3>Сайт маникюра</h3><p>Онлайн запись к мастеру</p><div class="overlay"></div></div>
+</a>
+</div>
+</section>
+
+<section>
+<h2>Почему я</h2>
+<div class="cards">
+<div class="card"><h3>Быстро</h3><p>2-5 дней</p><div class="overlay"></div></div>
+<div class="card"><h3>Красиво</h3><p>Современный дизайн</p><div class="overlay"></div></div>
+<div class="card"><h3>Недорого</h3><p>Доступные цены</p><div class="overlay"></div></div>
+</div>
+</section>
+
+<section>
+<h2>Как я работаю</h2>
+<div class="cards">
+<div class="card"><h3>1. Обсуждение</h3><p>Ты рассказываешь задачу</p><div class="overlay"></div></div>
+<div class="card"><h3>2. Разработка</h3><p>Я делаю сайт</p><div class="overlay"></div></div>
+<div class="card"><h3>3. Готово</h3><p>Ты получаешь результат</p><div class="overlay"></div></div>
+</div>
+</section>
+
+<section>
+<h2>Оставить заявку</h2>
+<form class="form">
+<input placeholder="Имя" required>
+<input placeholder="Контакт" required>
+<textarea placeholder="Что нужно" required></textarea>
+<button>Отправить</button>
+</form>
 </section>
 
 <section id="contacts">
-    <h2>Контакты</h2>
-    <p>Связаться со мной можно через:</p>
-    <a class="contact-link" href="https://t.me/vova_terminator" target="_blank">Telegram: @vova_terminator</a>
+<h2>Контакты</h2>
+<a class="contact-link" href="https://t.me/vova_terminator" target="_blank">Написать в Telegram</a>
 </section>
 
-<button id="backToTop" class="btn" style="position: fixed; bottom: 30px; right: 30px; display: none;">↑ Вверх</button>
+<div id="popup" class="popup">Заявка отправлена 🚀</div>
 
 <script>
-// Плавный скролл меню
-const menuLinks = document.querySelectorAll('nav a');
-menuLinks.forEach(link => {
-    link.addEventListener('click', e => {
-        e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href'));
-        if(target) target.scrollIntoView({behavior: 'smooth'});
-    });
-});
+const TOKEN = "8759650783:AAHnLt1KtGOlKkfmK1dFz-6-Povlf-te14Y";
+const CHAT_ID = "6364756388";
 
-// Hero анимация при загрузке
-window.addEventListener('load', () => {
-    document.querySelector('.hero').classList.add('show');
-});
+const popup = document.getElementById('popup');
 
-// Появление секций при скролле
-const sections = document.querySelectorAll('section');
-const sectionObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            entry.target.classList.add('show');
-            observer.unobserve(entry.target);
-        }
-    });
-}, {threshold: 0.1});
-sections.forEach(section => {
-    sectionObserver.observe(section);
-});
+document.querySelector('.form').addEventListener('submit', function(e){
+  e.preventDefault();
+  let name = this.querySelectorAll('input')[0].value;
+  let contact = this.querySelectorAll('input')[1].value;
+  let text = this.querySelector('textarea').value;
+  let message = `Новая заявка\nИмя: ${name}\nКонтакт: ${contact}\nЗадача: ${text}`;
 
-// Back to Top
-const backToTop = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-    if(window.scrollY > 300) {
-        backToTop.style.display = 'block';
-    } else {
-        backToTop.style.display = 'none';
-    }
-});
-backToTop.addEventListener('click', () => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
+  fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({chat_id: CHAT_ID, text: message})
+  })
+  .then(() => {
+    popup.classList.add('show');
+    setTimeout(() => { popup.classList.remove('show'); }, 3000);
+    this.reset();
+  });
 });
 </script>
 
